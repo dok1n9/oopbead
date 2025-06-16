@@ -1,4 +1,5 @@
 from beadclass.adatok import Adatok
+from beadclass.adatok import Jarat
 from beadclass.adatok import BelfoldiJarat
 from beadclass.adatok import NemkoziJarat
 from beadclass.adatok import LegiTars
@@ -7,10 +8,10 @@ from beadclass.adatok import LegiTars
 lt=LegiTars("SkyWays")
 adatok=Adatok()
 
-bjarat1=BelfoldiJarat(1, "HA-111", "Debrecen", 10, 15000)
-bjarat2=BelfoldiJarat(2, "HA-112", "Budapest", 10, 10000)
-njarat1=NemkoziJarat(1, "HA-221", "London", 10, 25000)
-njarat2=NemkoziJarat(2, "HA-222", "Budapest", 10, 20000)
+bjarat1=BelfoldiJarat(1, "HA-111", "Debrecen", 1)
+bjarat2=BelfoldiJarat(2, "HA-112", "Budapest", 1)
+njarat1=NemkoziJarat(1, "HA-221", "London", 1)
+njarat2=NemkoziJarat(2, "HA-222", "Budapest", 1)
 
 adatok+bjarat1
 adatok+bjarat2
@@ -46,7 +47,7 @@ while True:
 
             valaszfog=int(input("Választott menüpont: "))
 
-            if valaszfog==1: #Új foglalás
+            if valaszfog==1:
                 adatok.jaratlista()
                 lajstrom=input("Kérem adja meg a járat lajstromszámát (pl. AA-000): ")
                 datum=input("Adja meg az utazás dátumát (pl. 2025-06-01): ")
@@ -54,14 +55,24 @@ while True:
                 jarat=next((j for j in adatok.jaratok if j.lajstrom==lajstrom), None)
  
                 if jarat:
-                    adatok.ujfoglalasok(jarat, utas, datum)
-                    print("Foglalás rögzítve.")
+
+                    foglalt=any(f for f in adatok.foglalasok if f.jarat==jarat and f.datum==datum and f.utasneve==utas)                    
+                    if foglalt:
+                        print("Már van foglalása erre a járatra ezen a napon.")
+                    elif jarat.szhely>0:
+                        jarat.szhely-=1
+                        adatok.ujfoglalasok(jarat, utas, datum)
+                        print("Foglalás rögzítve.")
+                        print(f"Jegyár: {jarat.jegyar()} Ft")
+                    else:
+                        print("Nincs több szabad hely.")
+
                     adatok.foglalolista()
                 
                 else:
                     print("Nincs ilyen járat.")
 
-            elif valaszfog==2: #Foglalások törlése
+            elif valaszfog==2:
                 adatok.foglalolista()
                 datum=input("Adja meg az utazás dátumát (pl. 2025-06-01): ")
                 utas=input("Kérem adja meg a nevét: ")
@@ -69,6 +80,7 @@ while True:
 
                 if lemond:
                     adatok.foglalasok.remove(lemond)
+                    jarat.szhely+=1
                     print("Foglalás törölve.")
                     adatok.foglalolista()
                 
