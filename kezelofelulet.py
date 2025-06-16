@@ -7,10 +7,10 @@ from beadclass.adatok import LegiTars
 lt=LegiTars("SkyWays")
 adatok=Adatok()
 
-bjarat1=BelfoldiJarat(1, "HA-111", "Airbus A320", "Debrecen", 15000)
-bjarat2=BelfoldiJarat(2, "HA-112", "Airbus A320", "Budapest", 10000)
-njarat1=NemkoziJarat(1, "HA-221", "Boeing 777", "London", 25000)
-njarat2=NemkoziJarat(2, "HA-222", "Boeing 777", "Budapest", 20000)
+bjarat1=BelfoldiJarat(1, "HA-111", "Debrecen", 10, 15000)
+bjarat2=BelfoldiJarat(2, "HA-112", "Budapest", 10, 10000)
+njarat1=NemkoziJarat(1, "HA-221", "London", 10, 25000)
+njarat2=NemkoziJarat(2, "HA-222", "Budapest", 10, 20000)
 
 adatok+bjarat1
 adatok+bjarat2
