@@ -3,11 +3,11 @@ from abc import ABC, abstractmethod
 
 class Jarat(ABC):
 
-    def __init__(self, lajstrom, vegcel, jegyarak):
+    @abstractmethod
+    def __init__(self, lajstrom, vegcel, szhely:int):
         self.lajstrom=lajstrom
         self.vegcel=vegcel
-        self.jegyarak=jegyarak
-
+        self.szhely=szhely
 
     @abstractmethod
     def jegyar(self):
@@ -15,24 +15,24 @@ class Jarat(ABC):
 
 class BelfoldiJarat(Jarat):
     
-    def __init__(self, bosztaly, lajstrom, vegcel, szhely, jegyarak):
-        super().__init__(lajstrom, vegcel, jegyarak)
+    def __init__(self, bosztaly, lajstrom, vegcel, szhely):
+        super().__init__(lajstrom, vegcel, szhely)
         self.bosztaly=bosztaly
-        self.szhely=szhely
+        self.alapar=20000
 
     def jegyar(self):
-        return self.jegyarak * self.bosztaly
+        return self.alapar/self.bosztaly
 
 class NemkoziJarat(Jarat):
 
     
-    def __init__(self, nosztaly, lajstrom, vegcel, szhely, jegyarak):
-        super().__init__(lajstrom, vegcel, jegyarak)
+    def __init__(self, nosztaly, lajstrom, vegcel, szhely):
+        super().__init__(lajstrom, vegcel, szhely)
         self.nosztaly=nosztaly
-        self.szhely=szhely
+        self.alapar=50000
 
     def jegyar(self):
-        return self.jegyarak * self.nosztaly
+        return self.alapar/self.nosztaly
 
 class Jegyek:
     
@@ -54,7 +54,7 @@ class Adatok:
 
     def jaratlista(self):
         for j in self.jaratok:
-            print(f"{j.lajstrom} - {j.vegcel}")
+            print(f"{j.lajstrom} jelzésű gép- {j.vegcel} uticéllal - {j.szhely} szabadhellyel rendelkezik.")
 
     def ujfoglalasok(self, jarat, utasneve, datum):
         ujfoglalas = Jegyek(jarat, utasneve, datum)
